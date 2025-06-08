@@ -1,0 +1,25 @@
+services:
+  php83: &php
+    build:
+      context: .
+      dockerfile: docker/php8.3/Dockerfile
+    volumes:
+      - ./symfony64:/app
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ~/.composer:/.composer
+
+  php84:
+    <<: *php
+    build:
+      context: .
+      dockerfile: docker/php8.4/Dockerfile
+
+  symfony73:
+    <<: *php
+    volumes:
+      - ./symfony73:/app
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ~/.composer:/.composer
+
