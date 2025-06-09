@@ -25,7 +25,7 @@ final class Product
     public string $name;
 
     #[CommandHandler]
-    public static function create(CreateProductCommand $command): Product
+    public static function create(CreateProductCommand $command): static
     {
         $page = new self();
         $page->recordThat(new ProductCreated($command->productId, $command->name));
@@ -37,6 +37,13 @@ final class Product
     public function changeProduct(ChangeProductCommand $command) : void
     {
         $this->recordThat(new ProductChanged($command->productId, $command->product->getName()));
+    }
+
+    #[EventSourcingHandler]
+    public function productCreated(ProductCreated $event): void
+    {
+        $this->productId = $event->productId;
+        $this->name = $event->name;
     }
 
     #[EventSourcingHandler]
